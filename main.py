@@ -4,18 +4,40 @@ from customtkinter import CTkLabel, CTkButton
 
 ## Funções
 
+
 ## Função que grava arquivos no .txt
 
 def gravar_arquivo(input_usuario_cadastrar, input_senha_cadastrar):
     usuario = input_usuario_cadastrar.get()
     senha = input_senha_cadastrar.get()
 
-    with open("arquivo-persistencia/cadastrar-usuario.txt", "w", encoding="utf-8") as arquivo:
-        conteudo = f"""{{
-    user: {usuario}
-    senha: {senha}
-    }}"""
+    with open("arquivo-persistencia/cadastrar-usuario.txt", "a", encoding="utf-8") as arquivo:
+        conteudo = f"Usuário: {usuario} | Senha: {senha}\n"
         arquivo.write(conteudo)
+
+
+## Verifica registros no sistema
+
+def verificar_registros():
+    verificar_usuarios = ctk.CTkToplevel()
+    verificar_usuarios.geometry('600x300')
+    verificar_usuarios.title('Verificar registros')
+    verificar_usuarios.iconbitmap("icons/cadastro.ico")
+
+    try:
+        with open("arquivo-persistencia/cadastrar-usuario.txt", "r", encoding="utf-8") as arquivo:
+            conteudo = arquivo.read()
+    except FileNotFoundError:
+        conteudo = "Nenhum cadastro encontrado."
+
+    label_resultado = CTkLabel(
+        verificar_usuarios,
+        text=conteudo,
+        font=("Arial", 14),
+        wraplength=550,
+        justify="left"
+    )
+    label_resultado.pack(padx=20, pady=20)
 
 
 ## Registra novos usuários no sistema
@@ -93,7 +115,7 @@ def constroi_janela_principal():
         height=35,
         fg_color='#3B82F6',
         text='Verificar cadastros',
-        # command=lambda: verificar_registros()
+        command=lambda: verificar_registros()
     )
     button_verificar_usuarios_registrados.pack(pady=10)
 
@@ -113,9 +135,9 @@ def constroi_janela_principal():
         height=35,
         fg_color='#3B82F6',
         text='Sair do aplicativo',
-        # command=lambda: sair_aplicativo()
+        command=lambda: frame_principal.destroy()
     )
-    button_excluir_cadastros.pack(pady=10)
+    button_sair_aplicativo.pack(pady=10)
 
     janela_principal.mainloop()
 
