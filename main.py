@@ -4,6 +4,15 @@ from customtkinter import CTkLabel, CTkButton
 
 ## Funções
 
+## Função que exclui cadastros
+
+def excluir_cadastros():
+    try:
+        with open("arquivo-persistencia/cadastrar-usuario.txt", "w", encoding="utf-8") as arquivo:
+            arquivo.write("")
+        ctk.CTkMessagebox(title="Sucesso", message="Todos os cadastros foram excluídos com sucesso!", icon="check")
+    except FileNotFoundError:
+        ctk.CTkMessagebox(title="Erro", message="Nenhum arquivo encontrado para excluir.", icon="cancel")
 
 ## Função que grava arquivos no .txt
 
@@ -125,7 +134,7 @@ def constroi_janela_principal():
         height=35,
         fg_color='#3B82F6',
         text='Excluir cadastros',
-        # command=lambda: excluir_cadastros()
+        command=lambda: excluir_cadastros()
     )
     button_excluir_cadastros.pack(pady=10)
 
@@ -135,7 +144,7 @@ def constroi_janela_principal():
         height=35,
         fg_color='#3B82F6',
         text='Sair do aplicativo',
-        command=lambda: frame_principal.destroy()
+        command=lambda: janela_principal.destroy()
     )
     button_sair_aplicativo.pack(pady=10)
 
