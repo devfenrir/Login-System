@@ -1,6 +1,68 @@
 import customtkinter as ctk
+from customtkinter import CTkLabel, CTkButton
+
 
 ## Funções
+
+## Função que grava arquivos no .txt
+
+def gravar_arquivo(input_usuario_cadastrar, input_senha_cadastrar):
+    usuario = input_usuario_cadastrar.get()
+    senha = input_senha_cadastrar.get()
+
+    with open("arquivo-persistencia/cadastrar-usuario.txt", "w", encoding="utf-8") as arquivo:
+        conteudo = f"""{{
+    user: {usuario}
+    senha: {senha}
+    }}"""
+        arquivo.write(conteudo)
+
+
+## Registra novos usuários no sistema
+
+def registrar_usuario():
+    cadastrar_usuario = ctk.CTkToplevel()
+    cadastrar_usuario.geometry('600x300')
+    cadastrar_usuario.title('Cadastrar usuário')
+    cadastrar_usuario.iconbitmap("icons/cadastro.ico")
+
+    label_cadastrar_usuario = CTkLabel(
+        cadastrar_usuario,
+        text='Cadastre aqui um novo usuário',
+        font=("Arial", 16, "bold"))
+    label_cadastrar_usuario.pack(pady=20)
+
+    input_usuario_cadastrar = ctk.CTkEntry(
+        cadastrar_usuario,
+        placeholder_text='Digite o usuário',
+        corner_radius=15,
+        width=300,
+        height=35,
+        text_color='black'
+    )
+    input_usuario_cadastrar.pack(pady=5)
+
+    input_senha_cadastrar = ctk.CTkEntry(
+        cadastrar_usuario,
+        placeholder_text='Digite a senha',
+        corner_radius=15,
+        width=300,
+        height=35,
+        text_color='black'
+    )
+    input_senha_cadastrar.pack(pady=5)
+
+    button_registrar_usuario = CTkButton(
+        cadastrar_usuario,
+        width=200,
+        height=35,
+        fg_color='#3B82F6',
+        text='Registrar Usuário',
+        command=lambda: gravar_arquivo(input_usuario_cadastrar, input_senha_cadastrar)
+    )
+    button_registrar_usuario.pack(pady=10)
+
+
 ## Constrói janela principal da aplicação
 
 def constroi_janela_principal():
@@ -9,7 +71,55 @@ def constroi_janela_principal():
     janela_principal.title('Janela Principal')
     janela_principal.iconbitmap("icons/cadastro.ico")
 
+    frame_principal = ctk.CTkFrame(janela_principal, fg_color="transparent")
+    frame_principal.place(relx=0.5, rely=0.5, anchor='center')
+
+    label_apresentacao_janela_principal = CTkLabel(janela_principal, text='Seja bem-vindo(a) ao nosso sistema de cadastro!', font=("Arial", 16, "bold"))
+    label_apresentacao_janela_principal.pack(pady=20)
+
+    button_registrar_usuario = CTkButton(
+        frame_principal,
+        width=200,
+        height=35,
+        fg_color='#3B82F6',
+        text='Registrar usuário',
+        command=lambda: registrar_usuario()
+    )
+    button_registrar_usuario.pack(pady=10)
+
+    button_verificar_usuarios_registrados = CTkButton(
+        frame_principal,
+        width=200,
+        height=35,
+        fg_color='#3B82F6',
+        text='Verificar cadastros',
+        # command=lambda: verificar_registros()
+    )
+    button_verificar_usuarios_registrados.pack(pady=10)
+
+    button_excluir_cadastros = CTkButton(
+        frame_principal,
+        width=200,
+        height=35,
+        fg_color='#3B82F6',
+        text='Excluir cadastros',
+        # command=lambda: excluir_cadastros()
+    )
+    button_excluir_cadastros.pack(pady=10)
+
+    button_sair_aplicativo = CTkButton(
+        frame_principal,
+        width=200,
+        height=35,
+        fg_color='#3B82F6',
+        text='Sair do aplicativo',
+        # command=lambda: sair_aplicativo()
+    )
+    button_excluir_cadastros.pack(pady=10)
+
     janela_principal.mainloop()
+
+
 
 ## Função que valida login
 
@@ -25,6 +135,8 @@ def validar_login():
             constroi_janela_principal()
         else:
             label_mensagem_login.configure(text='Senha ou usuário incorreto(s)', text_color='#B71C1C')
+
+
 
 ## Parte do Login
 
@@ -72,6 +184,18 @@ if __name__ == '__main__':
         command=lambda: validar_login()
     )
     button_confirmar_login.pack(pady=16)
+
+    button_sair_login = ctk.CTkButton(
+        frame_login,
+        width=300,
+        height=35,
+        text='Sair aplicação',
+        fg_color='transparent',
+        text_color='black',
+        hover_color='#D3D3D3',
+        command=lambda: login.destroy()
+    )
+    button_sair_login.pack(pady=10)
 
 
     label_mensagem_login = ctk.CTkLabel(frame_login, text='', font=("Arial", 15, "bold"))
